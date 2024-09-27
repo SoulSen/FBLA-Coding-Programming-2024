@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CTE Connect - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
+          type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ url_for('static', filename='../static/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Add Partner Popup -->
+            <div class="modal fade" id="addPartnerModal" tabindex="-1" role="dialog"
+                 aria-labelledby="addPartnerModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addPartnerModalLabel">Add New Partner</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="post" action="/add-partner" id="addPartnerForm">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="partner-name" class="col-form-label">Partner Name:</label>
+                                    <input type="text" class="form-control" id="partner-name" name="name"
+                                           form="addPartnerForm">
+                                </div>
+                                <div class="form-group">
+                                    <label for="partner-organization-type" class="col-form-label">Type of
+                                        Organization:</label>
+                                    <select class="form-control" id="partner-organization-type" name="organizationType"
+                                            form="addPartnerForm">
+                                        <option>Business Partner</option>
+                                        <option>Community Partner</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="partner-resource-type" class="col-form-label">Resource Type:</label>
+                                    <select class="form-control" id="partner-resource-type" name="resourceType"
+                                            form="addPartnerForm">
+                                        <option>IT</option>
+                                        <option>Solar</option>
+                                        <option>Retail</option>
+                                        <option>Food</option>
+                                        <option>Medical</option>
+                                        <option>Legal</option>
+                                        <option>Entertainment</option>
+                                        <option>Community</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="partner-description" class="col-form-label">Description:</label>
+                                    <textarea class="form-control" id="partner-description" name="description"
+                                              form="addPartnerForm"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="partner-contact-name" class="col-form-label">Contact Name:</label>
+                                    <input type="text" class="form-control" id="partner-contact-name" name="contactName"
+                                           form="addPartnerForm">
+                                </div>
+                                <div class="form-group">
+                                    <label for="partner-contact-email" class="col-form-label">Contact Email:</label>
+                                    <input type="text" class="form-control" id="partner-contact-email"
+                                           name="contactEmail" form="addPartnerForm">
+                                </div>
+                                <div class="form-group">
+                                    <label for="partner-contact-phone" class="col-form-label">Contact Phone
+                                        Number:</label>
+                                    <input type="text" class="form-control" id="partner-contact-phone"
+                                           name="contactPhoneNumber" form="addPartnerForm">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" form="addPartnerForm" class="btn btn-primary">
+                                    Add Partner
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+
+                <a class="d-sm-inline-block my-1 my-md-0 mw-100" href="/">
+                    <div class="sidebar-brand-text my-2 mx-4">CTE Connect</div>
+                </a>
+
+                <!-- Topbar Search -->
+                <form action="/search-dashboard" method="post" id="searchForm"
+                      class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                               aria-label="Search" name="searchQuery" aria-describedby="basic-addon2"
+                               form="searchForm">
+                        <div class="input-group-append">
+                            <button type="submit" form="searchForm" class="btn btn-primary">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ first_name }} {{ last_name }}</span>
+                            <img class="img-profile rounded-circle"
+                                 src="../static/img/undraw_profile.svg">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/profile">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Partner List</h1>
+                    <div class="d-none d-sm-inline-block">
+                        <button type="button" class="btn btn-sm btn-primary shadow-sm"
+                                data-toggle="modal" data-target="#addPartnerModal">
+                            <i class="fas fa-download fa-sm text-white-50"></i> Add Partner
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary shadow-sm"
+                                data-toggle="modal" data-target="#filterModal">
+                            <i class="fas fa-download fa-sm text-white-50"></i> Filter by
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary shadow-sm"
+                                onclick="clearFilters()">
+                            <i class="fas fa-download fa-sm text-white-50"></i> Clear filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            # of Business Partners
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ business_count }}</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            # of Community Partners
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ community_count }}</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            Percentage of CTE Students
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">40%</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                         style="width: 40%" aria-valuenow="40" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            CTE Performance
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Very Good!</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row -->
+
+                {% for partner_row in partners | batch(2) %}
+                    <div class="row">
+                        {% for partner in partner_row %}
+                            <div class="col-lg-6 mb-4">
+                                <!-- Cards -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <button data-dismiss="alert" type="button"
+                                                class="close" aria-label="Close" data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="Remove Partner?">
+                                            <span aria-hidden="true" data-target="#remove{{ partner.name }}Modal"
+                                                  data-toggle="modal">&times;</span>
+                                        </button>
+                                        <h6 class="my-1 font-weight-bold text-primary">
+                                            {{ partner.name }}
+                                        </h6>
+                                        <h6 class="my-1 text-muted">{{ partner.type_organization }}
+                                            - {{ partner.resources }}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ partner.description }}
+                                        <br>
+                                        <br>
+                                        <p class="font-weight-bold my-0">
+                                            Contact Info:
+                                        </p>
+                                        {{ partner.contact_name }}
+                                        <br>
+                                        Email: {{ partner.contact_email }}
+                                        <br>
+                                        Phone Number: {{ partner.contact_phone }}
+
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <a href="https://gmail.com" class="btn btn-primary">Contact Representative</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <form action="/logout" method="post">
+                    <button class="btn btn-primary">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Modal-->
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Partners</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="/filter-dashboard" method="post" id="filterForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="partner-organization-type" class="col-form-label">Type of
+                            Organization:</label>
+                        <select class="form-control" id="partner-organization-type" name="type_organization"
+                                form="filterForm">
+                            <option selected></option>
+                            <option>Business Partner</option>
+                            <option>Community Partner</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="partner-resource-type" class="col-form-label">Resource Type:</label>
+                        <select class="form-control" id="partner-resource-type" name="resources"
+                                form="filterForm">
+                            <option selected></option>
+                            <option>IT</option>
+                            <option>Solar</option>
+                            <option>Retail</option>
+                            <option>Food</option>
+                            <option>Medical</option>
+                            <option>Legal</option>
+                            <option>Entertainment</option>
+                            <option>Community</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="filterForm" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Partner Modal-->
+{% for partner in partners %}
+    <div class="modal fade" id="remove{{ partner.name }}Modal" tabindex="-1" role="dialog"
+         aria-labelledby="remove{{ partner }}Label"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="remove{{ partner.name }}ModalLabel">Are you sure you want to remove this
+                        partner?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">If you remove {{ partner.name }}, you will never recover it again unless you add
+                    them again.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" onclick="removePartner('{{ partner.name }}')">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{{ url_for('static', filename='../static/js/sb-admin-2.min.js') }}"></script>
+
+<!-- Page level plugins -->
+<script src=" {{ url_for('static',  filename='vendor/chart.js/Chart.min.js') }}"></script>
+
+<!-- Page level custom scripts -->
+<script src=" {{ url_for('static', filename='../static/js/demo/chart-area-demo.js') }}"></script>
+<script src=" {{ url_for('static', filename='../static/js/demo/chart-pie-demo.js') }}"></script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    function removePartner(name) {
+        fetch(window.origin + "/remove-partner", {
+            method: "POST",
+            body: JSON.stringify({
+                name: name
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(response => {
+            window.location.replace(window.origin + "/");
+        });
+    }
+
+    function clearFilters() {
+        window.location.replace(window.origin + "/");
+    }
+</script>
+</body>
+
+</html>

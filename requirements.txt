@@ -1,0 +1,6 @@
+Flask-SQLAlchemy
+flask
+flask-cors
+flask-jwt-extended
+Flask-Migrate
+passlib

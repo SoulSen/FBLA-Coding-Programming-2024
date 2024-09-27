@@ -1,0 +1,8 @@
+class Config:
+    SECRET_KEY = 'uVUGaEsLqhqT4muVnueET9Z5a1kVgc1wLU6S9d9PX3eOZjIC0LumyzSDGVbG0vQ7vS97CtpoENHBiofG3k27XG'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///../database.sql'
+    JWT_SECRET_KEY = 'oMgCChv66UvK6EVPtJFXMGQBnmFve9eowHC0Iv9JaAHlGUG2b4D0B841tleoeWUWJBiMbZMJkAxdHGmdASn8XF'
+    JWT_BLACKLIST_ENABLED = ''
+    JWT_BLACKLIST_TOKEN_CHECKS = ['success', 'refresh']
+    JWT_TOKEN_LOCATION = ['cookies']
+    JWT_COOKIE_CSRF_PROTECT = False
